@@ -1,3 +1,21 @@
+Prompt used to build the backend:
+
+You are a senior backend engineer, generate a complete production grade fastAPI backedn for an AI news feed personalizer. Follow every rule below exactly.
+Architecture and code quality: -Folllow the clean code architecture which use routers, services, repositories,models.
+
+* routers call service only
+* repositories contain raw db queries only
+* never hardcode sensitive values
+-have a core folder which will include the config,security,logging,excwpotions and retries.
+
+* have a db folder for the get_db dependency , and wrap it in a main file . use python and fast api for this.
+* Store all sesnitive info in the .env file and call them from the config settings file, examples of env variabkles are newsapi key, news url endpoint, mongodburi,mongodbname,ratelimitdefault, cors origins,logl_level. User types: There will be only one user and do not create any routes or apis for user registration and login, we dont ened auth in this app, just need to store the user porefernces which i will copme later on to.
+Mongodb collections and schemas: User Prefernce db: interests: List[str]
+
+
+
+
+
 # AI News Feed Personalizer — Backend
 
 A production-grade FastAPI backend that delivers a personalised news feed using:
