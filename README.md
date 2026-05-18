@@ -1,18 +1,18 @@
 Prompt used to build the backend:
 
-You are a senior backend engineer, generate a complete production grade fastAPI backedn for an AI news feed personalizer. Follow every rule below exactly.
-Architecture and code quality: -Folllow the clean code architecture which use routers, services, repositories,models.
+You are a senior backend engineer, generate a complete production grade fastAPI backedn for an AI news feed personalizer. Follow every rule below exactly. Architecture and code quality: -Folllow the clean code architecture which use routers, services, repositories,models.
 
 * routers call service only
 * repositories contain raw db queries only
-* never hardcode sensitive values
--have a core folder which will include the config,security,logging,excwpotions and retries.
-
+* never hardcode sensitive values -have a core folder which will include the config,security,logging,excwpotions and retries.
 * have a db folder for the get_db dependency , and wrap it in a main file . use python and fast api for this.
-* Store all sesnitive info in the .env file and call them from the config settings file, examples of env variabkles are newsapi key, news url endpoint, mongodburi,mongodbname,ratelimitdefault, cors origins,logl_level. User types: There will be only one user and do not create any routes or apis for user registration and login, we dont ened auth in this app, just need to store the user porefernces which i will copme later on to.
-Mongodb collections and schemas: User Prefernce db: interests: List[str]
+* Store all sesnitive info in the .env file and call them from the config settings file, examples of env variabkles are newsapi key, news url endpoint, mongodburi,mongodbname,ratelimitdefault, cors origins,logl_level. User types: There will be only one user and do not create any routes or apis for user registration and login, we dont ened auth in this app, just need to store the user porefernces which i will copme later on to. Mongodb collections and schemas: User Prefernce db: interests: List[str], news_articles ( this will be a vector doc store, where u vectorize and store the news returned by the news api. and alos store the raw content as well to display on frontend. pydantic models: for user referbce coming from the frontend make sure to add logging to trace every single request and also add retry with backoffs, here are the required apis:
 
-
+1. get - /user-prefrence: this is to get the user reference values ,
+2. post - /user-prefrence: this is to posyt the preference, an example is : {"interests":["AI","cloud","startups"],"articles":["New AI startup raises funding","Football team wins
+3. you need a shcheduler api which will cqll a news api which endpiint is:https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_KEY, i will pass your_key in the .env. , so firstkly when app starts call this scheduler api,. get the news , you can expect this repsonse: , store it in the vcore mongo db , store the vectors and the raw document. i will pass the mongodb urio inb the .env file as well
+4. get-/feed api: this will run a sim lairty search between the interests embeddings and the news embeddings stored in the vector databases and only return the iytems from the db which have similiraity score above a certain threshold , use cosine similiraity search here. once you have a list, use a open source flash reranker to rerank the retrived similar list. The retrieval stratergy to be used is HYbrid Retrieval which is BM25 and semnatic search. also enhance the user interests by using query expansion mehcanism so the search output will be better. for every item in the list , i need a score which is to be retuirned by the retriver., pass all this to a cohere llm model: COHERE_API_KEY=i will add in the .env file COHERE_MODEL=command-r-plus-08-2024, use this llm call to return the Personalization reasoning. so each item returned from the reranker must have:  Scoring  Ranking  Personalization reasoning  Tie-breaking for evaliuation purposesz. Data Structure / Logic Expectations HashMap for interests; Heap/sorting for ranking.
+Sample Input {"interests":["AI","cloud","startups"],"articles":["New AI startup raises funding","Football team wins final","Cloud security trends in 2026"]} Expected Output [{"article":"New AI startup raises funding","score":2,"reason":"Matches AI and startups"}, {"article":"Cloud security trends in 2026","score":1,"reason":"Matches cloud"}].all of this must be called from the main file, send me the downloadable zip for this, also send me the requirements.txt
 
 
 
